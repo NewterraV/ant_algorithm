@@ -42,7 +42,8 @@ def generate_path_numpy(x=512, y=512, size=1024):
             direction = 0
         elif direction == -4:
             direction = 0
-    return arr * 255
+    count = np.sum(arr == 0)
+    return (arr * 255), count
 
 
 def generate_path(x=512, y=512, size=1024):
@@ -88,18 +89,16 @@ def save_img(arr, path=None):
     #             img.show()
     else:
         with Image.fromarray(arr) as img:
-            img.save(path)
-
-
-#             img.show()
+            img.convert("L").save(path)
 
 
 if __name__ == "__main__":
-
     # Вариант с массивом
     matrix = generate_path_numpy(512, 512, 1024)
-    save_img(matrix, "img.png")
+    save_img(matrix[0], "img.png")
+    print(matrix[1])
 
     # Вариант со словарем
     black_pixels = generate_path(512, 512, 1024)
     save_img(black_pixels, "img.png")
+    print(len(black_pixels))
